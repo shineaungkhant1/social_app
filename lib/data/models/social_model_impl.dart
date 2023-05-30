@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:social_media_app/data/models/social_model.dart';
 import 'package:social_media_app/data/vos/news_feed_vo.dart';
-import 'package:social_media_app/network/cloud_firestore_data_agent_impl.dart';
 import 'package:social_media_app/network/real_time_database_data_agent_impl.dart';
 import 'package:social_media_app/network/social_data_agent.dart';
 
@@ -13,25 +14,13 @@ class SocialModelImpl extends SocialModel {
 
   SocialModelImpl._internal();
 
-  // SocialDataAgent mDataAgent = RealtimeDatabaseDataAgentImpl();
-     SocialDataAgent mDataAgent = CloudFireStoreDataAgentImpl();
+  SocialDataAgent mDataAgent = RealtimeDatabaseDataAgentImpl();
+
+  //SocialDataAgent mDataAgent = CloudFireStoreDataAgentImpl();
+
   @override
   Stream<List<NewsFeedVO>> getNewsFeed() {
     return mDataAgent.getNewsFeed();
-  }
-
-  @override
-  Future<void> addNewPost(String description) {
-    var currentMilliseconds = DateTime.now().millisecondsSinceEpoch;
-    var newPost = NewsFeedVO(
-      id: currentMilliseconds,
-      userName: "Shine Aung Khant",
-      postImage: "",
-      description: description,
-      profilePicture:
-          "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-    );
-    return mDataAgent.addNewPost(newPost);
   }
 
   @override
@@ -40,12 +29,38 @@ class SocialModelImpl extends SocialModel {
   }
 
   @override
-  Future<void> editPost(NewsFeedVO newsFeed) {
-    return mDataAgent.addNewPost(newsFeed);
+  Future<void> addNewPost(String description, File? imageFile) {
+    if (imageFile != null) {
+      return mDataAgent
+          .uploadFileToFirebase(imageFile)
+          .then((downloadUrl) => craftNewsFeedVO(description, downloadUrl))
+          .then((newPost) => mDataAgent.addNewPost(newPost));
+    } else {
+      return craftNewsFeedVO(description, "")
+          .then((newPost) => mDataAgent.addNewPost(newPost));
+    }
+  }
+
+  Future<NewsFeedVO> craftNewsFeedVO(String description, String imageUrl) {
+    var currentMilliseconds = DateTime.now().millisecondsSinceEpoch;
+    var newPost = NewsFeedVO(
+      id: currentMilliseconds,
+      userName: "Shine Aung Khant",
+      postImage: imageUrl,
+      description: description,
+      profilePicture:
+      "https://dnm.nflximg.net/api/v6/2DuQlx0fM4wd1nzqm5BFBi6ILa8/AAAAQdeKvE6qBDiDGgWrg9yVbKS9R91sZaoCt0JrlxzT8pv-L5-ofdeBEZq5LymJe2t8A-kzpFtxeBSeDZ1VEtzmj8Y33Ll5uIQkyDpcs_IUef7gPyfpujL3IL_zzXXFlOsbGwSPvJUaUuNd5oLAcARyFkhN.jpg?r=157",
+    );
+    return Future.value(newPost);
   }
 
   @override
   Stream<NewsFeedVO> getNewsFeedById(int newsFeedId) {
-     return mDataAgent.getNewsFeedById(newsFeedId);
+    return mDataAgent.getNewsFeedById(newsFeedId);
+  }
+
+  @override
+  Future<void> editPost(NewsFeedVO newsFeed, File? imageFile) {
+    return mDataAgent.addNewPost(newsFeed);
   }
 }

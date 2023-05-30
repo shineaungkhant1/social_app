@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:social_media_app/data/vos/news_feed_vo.dart';
 import 'package:social_media_app/network/social_data_agent.dart';
+
+import 'cloud_firestore_data_agent_impl.dart';
 
 /// Database Paths
 const newsFeedPath = "newsfeed";
@@ -34,20 +39,6 @@ class RealtimeDatabaseDataAgentImpl extends SocialDataAgent {
   }
 
   @override
-  Future<void> addNewPost(NewsFeedVO newPost) {
-    return databaseRef
-        .child(newsFeedPath)
-        .child(newPost.id.toString())
-        .set(newPost.toJson());
-  }
-
-  @override
-  Future<void> deletePost(int postId) {
-    return databaseRef.child(newsFeedPath)
-        .child(postId.toString()).remove();
-  }
-
-  @override
   Stream<NewsFeedVO> getNewsFeedById(int newsFeedId) {
     return databaseRef
         .child(newsFeedPath)
@@ -64,4 +55,25 @@ class RealtimeDatabaseDataAgentImpl extends SocialDataAgent {
     });
   }
 
+  @override
+  Future<void> addNewPost(NewsFeedVO newPost) {
+    return databaseRef
+        .child(newsFeedPath)
+        .child(newPost.id.toString())
+        .set(newPost.toJson());
+  }
+
+  @override
+  Future<void> deletePost(int postId) {
+    return databaseRef.child(newsFeedPath).child(postId.toString()).remove();
+  }
+
+  @override
+  Future<String> uploadFileToFirebase(File image) {
+    return FirebaseStorage.instance
+        .ref(fileUploadRef)
+        .child("${DateTime.now().millisecondsSinceEpoch}")
+        .putFile(image)
+        .then((taskSnapshot) => taskSnapshot.ref.getDownloadURL());
+  }
 }
