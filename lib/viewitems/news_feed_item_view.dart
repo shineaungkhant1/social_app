@@ -9,7 +9,12 @@ class NewsFeedItemView extends StatelessWidget {
   final Function(int) onTapDelete;
   final Function(int) onTapEdit;
 
-  const NewsFeedItemView({Key? key, required this.mNewsFeed, required this.onTapDelete, required this.onTapEdit}) : super(key: key);
+  const NewsFeedItemView({
+    Key? key,
+    required this.mNewsFeed,
+    required this.onTapDelete,
+    required this.onTapEdit,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +33,14 @@ class NewsFeedItemView extends StatelessWidget {
               userName: mNewsFeed?.userName ?? "",
             ),
             const Spacer(),
-              MoreButtonView(
-               onTapDelete: () {
-                 onTapDelete(mNewsFeed?.id ?? 0);
-               },
-               onTapEdit: () {
-                 onTapEdit(mNewsFeed?.id ?? 0);
-               },
-             ),
+            MoreButtonView(
+              onTapDelete: () {
+                onTapDelete(mNewsFeed?.id ?? 0);
+              },
+              onTapEdit: () {
+                onTapEdit(mNewsFeed?.id ?? 0);
+              },
+            ),
           ],
         ),
         const SizedBox(
@@ -143,7 +148,6 @@ class MoreButtonView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-      padding: EdgeInsets.zero,
       icon: const Icon(
         Icons.more_vert,
         color: Colors.grey,

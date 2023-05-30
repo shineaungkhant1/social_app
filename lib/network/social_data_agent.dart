@@ -4,4 +4,5 @@ abstract class SocialDataAgent {
   Stream<List<NewsFeedVO>> getNewsFeed();
   Future<void> addNewPost(NewsFeedVO newPost);
   Future<void> deletePost(int postId);
+  Stream<NewsFeedVO> getNewsFeedById(int newsFeedId);
 }

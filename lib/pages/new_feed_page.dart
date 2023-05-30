@@ -99,14 +99,14 @@ class NewsFeedPage extends StatelessWidget {
       ),
     );
   }
-}
 
-void _navigateToEditPostPage(BuildContext context, int newsFeedId) {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => AddNewPostPage(
-        newsFeedId: newsFeedId,
+  void _navigateToEditPostPage(BuildContext context, int newsFeedId) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AddNewPostPage(
+          newsFeedId: newsFeedId,
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

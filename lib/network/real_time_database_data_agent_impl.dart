@@ -32,14 +32,6 @@ class RealtimeDatabaseDataAgentImpl extends SocialDataAgent {
       }
     });
   }
-  // @override
-  // Stream<List<NewsFeedVO>> getNewsFeed() {
-  //   return databaseRef.child(newsFeedPath).onValue.map((event) {
-  //     return event.snapshot.value?.values.map<NewsFeedVO>((element) {
-  //       return NewsFeedVO.fromJson(Map<String, dynamic>.from(element));
-  //     }).toList();
-  //   });
-  // }
 
   @override
   Future<void> addNewPost(NewsFeedVO newPost) {
@@ -54,4 +46,22 @@ class RealtimeDatabaseDataAgentImpl extends SocialDataAgent {
     return databaseRef.child(newsFeedPath)
         .child(postId.toString()).remove();
   }
+
+  @override
+  Stream<NewsFeedVO> getNewsFeedById(int newsFeedId) {
+    return databaseRef
+        .child(newsFeedPath)
+        .child(newsFeedId.toString())
+        .once()
+        .asStream()
+        .map((snapShot) {
+      final dynamic value = snapShot.snapshot.value;
+      if (value != null) {
+        return NewsFeedVO.fromJson(Map<String, dynamic>.from(value));
+      } else {
+        throw Exception('Data not found');
+      }
+    });
+  }
+
 }

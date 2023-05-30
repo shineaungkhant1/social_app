@@ -7,12 +7,15 @@ import 'package:social_media_app/widgets/profile_image_view.dart';
 class AddNewPostPage extends StatelessWidget {
   final int? newsFeedId;
 
-  const AddNewPostPage({Key? key, this.newsFeedId,}) : super(key: key);
+  const AddNewPostPage({
+    Key? key,
+    this.newsFeedId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => AddNewPostBloc(),
+      create: (context) => AddNewPostBloc(newsFeedId: newsFeedId),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -22,7 +25,14 @@ class AddNewPostPage extends StatelessWidget {
             margin: const EdgeInsets.only(
               left: MARGIN_MEDIUM,
             ),
-            child: const Text(
+            child:  (newsFeedId) != null?const Text(
+              "Edit Post",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: TEXT_HEADING_1X,
+                color: Colors.black,
+              ),
+            ):const Text(
               "Add New Post",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -142,24 +152,25 @@ class ProfileImageAndNameView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: const [
-        ProfileImageView(
-          profileImage:
-              "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        ),
-        SizedBox(
-          width: MARGIN_MEDIUM_2,
-        ),
-        Text(
-          "Shine Aung Khant",
-          style: TextStyle(
-            fontSize: TEXT_REGULAR_2X,
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
+    return Consumer<AddNewPostBloc>(
+      builder: (context, bloc, child) => Row(
+        children: [
+          ProfileImageView(
+            profileImage: bloc.profilePicture ?? "",
           ),
-        ),
-      ],
+          const SizedBox(
+            width: MARGIN_MEDIUM_2,
+          ),
+          Text(
+            bloc.userName ?? "",
+            style: const TextStyle(
+              fontSize: TEXT_REGULAR_2X,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -176,6 +187,7 @@ class AddNewPostTextFieldView extends StatelessWidget {
         height: ADD_NEW_POST_TEXTFIELD_HEIGHT,
         child: TextField(
           maxLines: 24,
+          controller: TextEditingController(text: bloc.newPostDescription),
           onChanged: (text) {
             bloc.onNewPostTextChanged(text);
           },
