@@ -36,7 +36,7 @@ class AddNewPostBloc extends ChangeNotifier {
   void _prepopulateDataForAddNewPost() {
     userName = "Shine Aung Khant";
     profilePicture =
-    "https://dnm.nflximg.net/api/v6/2DuQlx0fM4wd1nzqm5BFBi6ILa8/AAAAQdeKvE6qBDiDGgWrg9yVbKS9R91sZaoCt0JrlxzT8pv-L5-ofdeBEZq5LymJe2t8A-kzpFtxeBSeDZ1VEtzmj8Y33Ll5uIQkyDpcs_IUef7gPyfpujL3IL_zzXXFlOsbGwSPvJUaUuNd5oLAcARyFkhN.jpg?r=157";
+    "https://e0.pxfuel.com/wallpapers/444/241/desktop-wallpaper-peaky-blinder-thomas-shelby-hollywood-actor-actor.jpg";
     _notifySafely();
   }
 
