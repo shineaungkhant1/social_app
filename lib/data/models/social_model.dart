@@ -8,4 +8,5 @@ abstract class SocialModel {
   Future<void> addNewPost(String description, File? imageFile);
   Future<void> editPost(NewsFeedVO newsFeed,File? imageFile);
   Future<void> deletePost(int postId);
+
 }

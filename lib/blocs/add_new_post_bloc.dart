@@ -36,7 +36,7 @@ class AddNewPostBloc extends ChangeNotifier {
   void _prepopulateDataForAddNewPost() {
     userName = "Shine Aung Khant";
     profilePicture =
-    "https://images.immediate.co.uk/production/volatile/sites/3/2017/11/peaky-tommy-5d3c20b.jpg";
+        "https://images.immediate.co.uk/production/volatile/sites/3/2017/11/peaky-tommy-5d3c20b.jpg";
     _notifySafely();
   }
 

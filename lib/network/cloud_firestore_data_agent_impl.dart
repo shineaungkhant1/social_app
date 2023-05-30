@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:social_media_app/data/vos/news_feed_vo.dart';
+import 'package:social_media_app/data/vos/user_vo.dart';
 import 'package:social_media_app/network/social_data_agent.dart';
 
 /// News Feed Collection
@@ -50,7 +51,7 @@ class CloudFireStoreDataAgentImpl extends SocialDataAgent {
         .asStream()
         .where((documentSnapShot) => documentSnapShot.data() != null)
         .map((documentSnapShot) =>
-        NewsFeedVO.fromJson(documentSnapShot.data()!));
+            NewsFeedVO.fromJson(documentSnapShot.data()!));
   }
 
   @override
@@ -60,5 +61,16 @@ class CloudFireStoreDataAgentImpl extends SocialDataAgent {
         .child("${DateTime.now().millisecondsSinceEpoch}")
         .putFile(image)
         .then((taskSnapshot) => taskSnapshot.ref.getDownloadURL());
+  }
+
+  @override
+  Future registerNewUser(UserVO newUser) {
+    return Future.value();
+  }
+
+  @override
+  Future login(String email, String password) {
+    // TODO: implement login
+    throw UnimplementedError();
   }
 }

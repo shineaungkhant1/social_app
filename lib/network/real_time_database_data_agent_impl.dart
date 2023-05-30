@@ -1,14 +1,20 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:social_media_app/data/vos/news_feed_vo.dart';
+import 'package:social_media_app/data/vos/user_vo.dart';
 import 'package:social_media_app/network/social_data_agent.dart';
 
 import 'cloud_firestore_data_agent_impl.dart';
 
 /// Database Paths
 const newsFeedPath = "newsfeed";
+const usersPath = "users";
+
+/// File Upload References
+const fileUploadRef = "uploads";
 
 class RealtimeDatabaseDataAgentImpl extends SocialDataAgent {
   static final RealtimeDatabaseDataAgentImpl _singleton =
@@ -22,7 +28,12 @@ class RealtimeDatabaseDataAgentImpl extends SocialDataAgent {
 
   /// Database
   var databaseRef = FirebaseDatabase.instance.ref();
+
+  /// Storage
   var firebaseStorage = FirebaseStorage.instance;
+
+  /// Auth
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Stream<List<NewsFeedVO>> getNewsFeed() {
@@ -76,5 +87,30 @@ class RealtimeDatabaseDataAgentImpl extends SocialDataAgent {
         .child("${DateTime.now().millisecondsSinceEpoch}")
         .putFile(image)
         .then((taskSnapshot) => taskSnapshot.ref.getDownloadURL());
+  }
+
+  @override
+  Future registerNewUser(UserVO newUser) {
+    return auth
+        .createUserWithEmailAndPassword(
+        email: newUser.email ?? "", password: newUser.password ?? "")
+        .then((credential) =>
+    credential.user?..updateDisplayName(newUser.userName))
+        .then((user) {
+      newUser.id = user?.uid ?? "";
+      _addNewUser(newUser);
+    });
+  }
+
+  @override
+  Future login(String email, String password) {
+    return auth.signInWithEmailAndPassword(email: email, password: password);
+  }
+
+  Future<void> _addNewUser(UserVO newUser) {
+    return databaseRef
+        .child(usersPath)
+        .child(newUser.id.toString())
+        .set(newUser.toJson());
   }
 }

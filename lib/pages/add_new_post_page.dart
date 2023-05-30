@@ -124,7 +124,7 @@ class LoadingView extends StatelessWidget {
           width: MARGIN_XXLARGE,
           height: MARGIN_XXLARGE,
           child: LoadingIndicator(
-            indicatorType: Indicator.audioEqualizer,
+            indicatorType: Indicator.ballRotateChase,
             colors: [Colors.white],
             strokeWidth: 2,
             backgroundColor: Colors.transparent,
