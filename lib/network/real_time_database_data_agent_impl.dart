@@ -21,7 +21,8 @@ class RealtimeDatabaseDataAgentImpl extends SocialDataAgent {
   RealtimeDatabaseDataAgentImpl._internal();
 
   /// Database
-  var databaseRef = FirebaseDatabase.instance.reference();
+  var databaseRef = FirebaseDatabase.instance.ref();
+  var firebaseStorage = FirebaseStorage.instance;
 
   @override
   Stream<List<NewsFeedVO>> getNewsFeed() {
@@ -70,7 +71,7 @@ class RealtimeDatabaseDataAgentImpl extends SocialDataAgent {
 
   @override
   Future<String> uploadFileToFirebase(File image) {
-    return FirebaseStorage.instance
+    return firebaseStorage
         .ref(fileUploadRef)
         .child("${DateTime.now().millisecondsSinceEpoch}")
         .putFile(image)
