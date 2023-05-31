@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/blocs/add_new_post_bloc.dart';
 import 'package:social_media_app/resources/dimens.dart';
+import 'package:social_media_app/resources/strings.dart';
+import 'package:social_media_app/widgets/loading_view.dart';
+import 'package:social_media_app/widgets/primary_button_view.dart';
 import 'package:social_media_app/widgets/profile_image_view.dart';
 
 class AddNewPostPage extends StatelessWidget {
@@ -33,14 +35,7 @@ class AddNewPostPage extends StatelessWidget {
                   margin: const EdgeInsets.only(
                     left: MARGIN_MEDIUM,
                   ),
-                  child: (newsFeedId) != null?const Text(
-                    "Edit Post",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: TEXT_HEADING_1X,
-                      color: Colors.black,
-                    ),
-                  ):const Text(
+                  child: const Text(
                     "Add New Post",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -77,11 +72,11 @@ class AddNewPostPage extends StatelessWidget {
                       SizedBox(
                         height: MARGIN_MEDIUM_2,
                       ),
-                      PostImageView(),
+                      PostDescriptionErrorView(),
                       SizedBox(
                         height: MARGIN_MEDIUM_2,
                       ),
-                      PostDescriptionErrorView(),
+                      PostImageView(),
                       SizedBox(
                         height: MARGIN_LARGE,
                       ),
@@ -104,32 +99,6 @@ class AddNewPostPage extends StatelessWidget {
               ),
             )
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class LoadingView extends StatelessWidget {
-  const LoadingView({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black12,
-      child: const Center(
-        child: SizedBox(
-          width: MARGIN_XXLARGE,
-          height: MARGIN_XXLARGE,
-          child: LoadingIndicator(
-            indicatorType: Indicator.ballRotateChase,
-            colors: [Colors.white],
-            strokeWidth: 2,
-            backgroundColor: Colors.transparent,
-            pathBackgroundColor: Colors.black,
-          ),
         ),
       ),
     );
@@ -236,25 +205,8 @@ class PostButtonView extends StatelessWidget {
             Navigator.pop(context);
           });
         },
-        child: Container(
-          width: double.infinity,
-          height: MARGIN_XXLARGE,
-          decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(
-              MARGIN_LARGE,
-            ),
-          ),
-          child: const Center(
-            child: Text(
-              "POST",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: TEXT_REGULAR_2X,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
+        child: const PrimaryButtonView(
+          label: LBL_POST,
         ),
       ),
     );

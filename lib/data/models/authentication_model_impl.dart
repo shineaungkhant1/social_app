@@ -37,4 +37,19 @@ class AuthenticationModelImpl extends AuthenticationModel {
     );
     return Future.value(newUser);
   }
+
+  @override
+  UserVO getLoggedInUser() {
+    return mDataAgent.getLoggedInUser();
+  }
+
+  @override
+  bool isLoggedIn() {
+    return mDataAgent.isLoggedIn();
+  }
+
+  @override
+  Future<void> logOut() {
+    return mDataAgent.logOut();
+  }
 }

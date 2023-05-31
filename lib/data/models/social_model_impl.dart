@@ -1,11 +1,11 @@
 import 'dart:io';
 
+import 'package:social_media_app/data/models/authentication_model.dart';
+import 'package:social_media_app/data/models/authentication_model_impl.dart';
 import 'package:social_media_app/data/models/social_model.dart';
 import 'package:social_media_app/data/vos/news_feed_vo.dart';
 import 'package:social_media_app/network/real_time_database_data_agent_impl.dart';
 import 'package:social_media_app/network/social_data_agent.dart';
-
-import '../../network/cloud_firestore_data_agent_impl.dart';
 
 class SocialModelImpl extends SocialModel {
   static final SocialModelImpl _singleton = SocialModelImpl._internal();
@@ -16,9 +16,11 @@ class SocialModelImpl extends SocialModel {
 
   SocialModelImpl._internal();
 
-  // SocialDataAgent mDataAgent = RealtimeDatabaseDataAgentImpl();
+  SocialDataAgent mDataAgent = RealtimeDatabaseDataAgentImpl();
+  //SocialDataAgent mDataAgent = CloudFireStoreDataAgentImpl();
 
-  SocialDataAgent mDataAgent = CloudFireStoreDataAgentImpl();
+  /// Other Models
+  final AuthenticationModel _authenticationModel = AuthenticationModelImpl();
 
   @override
   Stream<List<NewsFeedVO>> getNewsFeed() {
@@ -47,11 +49,11 @@ class SocialModelImpl extends SocialModel {
     var currentMilliseconds = DateTime.now().millisecondsSinceEpoch;
     var newPost = NewsFeedVO(
       id: currentMilliseconds,
-      userName: "Shine Aung Khant",
+      userName: _authenticationModel.getLoggedInUser().userName,
       postImage: imageUrl,
       description: description,
       profilePicture:
-      "https://dnm.nflximg.net/api/v6/2DuQlx0fM4wd1nzqm5BFBi6ILa8/AAAAQdeKvE6qBDiDGgWrg9yVbKS9R91sZaoCt0JrlxzT8pv-L5-ofdeBEZq5LymJe2t8A-kzpFtxeBSeDZ1VEtzmj8Y33Ll5uIQkyDpcs_IUef7gPyfpujL3IL_zzXXFlOsbGwSPvJUaUuNd5oLAcARyFkhN.jpg?r=157",
+          "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
     );
     return Future.value(newPost);
   }
@@ -65,6 +67,4 @@ class SocialModelImpl extends SocialModel {
   Future<void> editPost(NewsFeedVO newsFeed, File? imageFile) {
     return mDataAgent.addNewPost(newsFeed);
   }
-
-
 }

@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:social_media_app/data/models/authentication_model.dart';
+import 'package:social_media_app/data/models/authentication_model_impl.dart';
 import 'package:social_media_app/data/models/social_model.dart';
 import 'package:social_media_app/data/models/social_model_impl.dart';
 import 'package:social_media_app/data/vos/news_feed_vo.dart';
+import 'package:social_media_app/data/vos/user_vo.dart';
 
 class AddNewPostBloc extends ChangeNotifier {
   /// State
@@ -11,6 +14,7 @@ class AddNewPostBloc extends ChangeNotifier {
   bool isAddNewPostError = false;
   bool isDisposed = false;
   bool isLoading = false;
+  UserVO? _loggedInUser;
 
   /// Image
   File? chosenImageFile;
@@ -23,8 +27,10 @@ class AddNewPostBloc extends ChangeNotifier {
 
   /// Model
   final SocialModel _model = SocialModelImpl();
+  final AuthenticationModel _authenticationModel = AuthenticationModelImpl();
 
   AddNewPostBloc({int? newsFeedId}) {
+    _loggedInUser = _authenticationModel.getLoggedInUser();
     if (newsFeedId != null) {
       isInEditMode = true;
       _prepopulateDataForEditMode(newsFeedId);
@@ -34,9 +40,9 @@ class AddNewPostBloc extends ChangeNotifier {
   }
 
   void _prepopulateDataForAddNewPost() {
-    userName = "Shine Aung Khant";
+    userName = _loggedInUser?.userName ?? "";
     profilePicture =
-        "https://images.immediate.co.uk/production/volatile/sites/3/2017/11/peaky-tommy-5d3c20b.jpg";
+        "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500";
     _notifySafely();
   }
 

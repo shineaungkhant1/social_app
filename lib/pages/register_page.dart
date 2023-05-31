@@ -28,75 +28,77 @@ class RegisterPage extends StatelessWidget {
                   left: MARGIN_XLARGE,
                   right: MARGIN_XLARGE,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      LBL_REGISTER,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: TEXT_BIG,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: MARGIN_XXLARGE,
-                    ),
-                    Consumer<RegisterBloc>(
-                      builder: (context, bloc, child) => LabelAndTextFieldView(
-                        label: LBL_EMAIL,
-                        hint: HINT_EMAIL,
-                        onChanged: (email) => bloc.onEmailChanged(email),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: MARGIN_XLARGE,
-                    ),
-                    Consumer<RegisterBloc>(
-                      builder: (context, bloc, child) => LabelAndTextFieldView(
-                        label: LBL_USER_NAME,
-                        hint: HINT_USER_NAME,
-                        onChanged: (userName) =>
-                            bloc.onUserNameChanged(userName),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: MARGIN_XLARGE,
-                    ),
-                    Consumer<RegisterBloc>(
-                      builder: (context, bloc, child) => LabelAndTextFieldView(
-                        label: LBL_PASSWORD,
-                        hint: HINT_PASSWORD,
-                        onChanged: (password) =>
-                            bloc.onPasswordChanged(password),
-                        isSecure: true,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: MARGIN_XXLARGE,
-                    ),
-                    Consumer<RegisterBloc>(
-                      builder: (context, bloc, child) => TextButton(
-                        onPressed: () {
-                          bloc
-                              .onTapRegister()
-                              .then((value) => Navigator.pop(context))
-                              .catchError((error) => showSnackBarWithMessage(
-                              context, error.toString()));
-                        },
-                        child: const PrimaryButtonView(
-                          label: LBL_REGISTER,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        LBL_REGISTER,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: TEXT_BIG,
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: MARGIN_LARGE,
-                    ),
-                    const ORView(),
-                    const SizedBox(
-                      height: MARGIN_LARGE,
-                    ),
-                    const LoginTriggerView()
-                  ],
+                      const SizedBox(
+                        height: MARGIN_XXLARGE,
+                      ),
+                      Consumer<RegisterBloc>(
+                        builder: (context, bloc, child) => LabelAndTextFieldView(
+                          label: LBL_EMAIL,
+                          hint: HINT_EMAIL,
+                          onChanged: (email) => bloc.onEmailChanged(email),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: MARGIN_XLARGE,
+                      ),
+                      Consumer<RegisterBloc>(
+                        builder: (context, bloc, child) => LabelAndTextFieldView(
+                          label: LBL_USER_NAME,
+                          hint: HINT_USER_NAME,
+                          onChanged: (userName) =>
+                              bloc.onUserNameChanged(userName),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: MARGIN_XLARGE,
+                      ),
+                      Consumer<RegisterBloc>(
+                        builder: (context, bloc, child) => LabelAndTextFieldView(
+                          label: LBL_PASSWORD,
+                          hint: HINT_PASSWORD,
+                          onChanged: (password) =>
+                              bloc.onPasswordChanged(password),
+                          isSecure: true,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: MARGIN_XXLARGE,
+                      ),
+                      Consumer<RegisterBloc>(
+                        builder: (context, bloc, child) => TextButton(
+                          onPressed: () {
+                            bloc
+                                .onTapRegister()
+                                .then((value) => Navigator.pop(context))
+                                .catchError((error) => showSnackBarWithMessage(
+                                    context, error.toString()));
+                          },
+                          child: const PrimaryButtonView(
+                            label: LBL_REGISTER,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: MARGIN_LARGE,
+                      ),
+                      const ORView(),
+                      const SizedBox(
+                        height: MARGIN_LARGE,
+                      ),
+                      const LoginTriggerView()
+                    ],
+                  ),
                 ),
               ),
               Visibility(
