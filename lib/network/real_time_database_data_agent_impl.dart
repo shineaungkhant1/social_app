@@ -122,6 +122,7 @@ class RealtimeDatabaseDataAgentImpl extends SocialDataAgent {
   UserVO getLoggedInUser() {
     return UserVO(
       id: auth.currentUser?.uid,
+      userProfile: auth.currentUser?.photoURL,
       email: auth.currentUser?.email,
       userName: auth.currentUser?.displayName,
     );
@@ -130,5 +131,35 @@ class RealtimeDatabaseDataAgentImpl extends SocialDataAgent {
   @override
   Future logOut() {
     return auth.signOut();
+  }
+
+  @override
+  Future<UserVO> getUserProfileById(String userId) {
+    // return databaseRef
+    //     .child(usersPath)
+    //     .child(newsFeedId.toString())
+    //     .once()
+    //     .asStream()
+    //     .map((snapShot) {
+    //   final dynamic value = snapShot.snapshot.value;
+    //   if (value != null) {
+    //     return NewsFeedVO.fromJson(Map<String, dynamic>.from(value));
+    //   } else {
+    //     throw Exception('Data not found');
+    //   }
+    // });
+    return databaseRef
+        .child(usersPath)
+        .child(userId)
+        .once()
+        .then((databaseEvent){
+       final dynamic value = databaseEvent.snapshot.value;
+       if(value != null){
+         return UserVO.fromJson(Map<String,dynamic>.from(value));
+       } else {
+         throw Exception('Data not Found');
+       }
+    });
+
   }
 }

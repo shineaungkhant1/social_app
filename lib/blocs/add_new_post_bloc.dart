@@ -41,8 +41,13 @@ class AddNewPostBloc extends ChangeNotifier {
 
   void _prepopulateDataForAddNewPost() {
     userName = _loggedInUser?.userName ?? "";
-    profilePicture =
-        "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500";
+
+    String id =_loggedInUser?.id??"";
+    _authenticationModel.getUserProfileById(id).then((value){
+      profilePicture = value.userProfile??"";
+      print("Profile Picture==========================>$profilePicture" );
+      _notifySafely();
+    });
     _notifySafely();
   }
 
@@ -109,7 +114,7 @@ class AddNewPostBloc extends ChangeNotifier {
   }
 
   Future<void> _createNewNewsFeedPost() {
-    return _model.addNewPost(newPostDescription, chosenImageFile);
+    return _model.addNewPost(newPostDescription, chosenImageFile,userProfile);
   }
 
   @override

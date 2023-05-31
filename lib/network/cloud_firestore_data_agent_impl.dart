@@ -114,4 +114,10 @@ class CloudFireStoreDataAgentImpl extends SocialDataAgent {
   Future logOut() {
     return auth.signOut();
   }
+
+  @override
+  Future<UserVO> getUserProfileById(String userId) {
+    // TODO: implement getUserProfileById
+    throw UnimplementedError();
+  }
 }

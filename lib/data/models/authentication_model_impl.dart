@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:social_media_app/data/models/authentication_model.dart';
 import 'package:social_media_app/data/vos/user_vo.dart';
 import 'package:social_media_app/network/real_time_database_data_agent_impl.dart';
@@ -23,14 +25,22 @@ class AuthenticationModelImpl extends AuthenticationModel {
   }
 
   @override
-  Future<void> register(String email, String userName, String password) {
-    return craftUserVO(email, password, userName)
-        .then((user) => mDataAgent.registerNewUser(user));
+  Future<void> register(String email, String userName, String password,File? userProfile) {
+    if(userProfile != null){
+      return mDataAgent
+          .uploadFileToFirebase(userProfile)
+          .then((downloadUrl) => craftUserVO(email, password, userName, downloadUrl))
+          .then((user) => mDataAgent.registerNewUser(user));
+    } else {
+      return craftUserVO(email, password, userName, "")
+          .then((user) => mDataAgent.registerNewUser(user));
+    }
   }
 
-  Future<UserVO> craftUserVO(String email, String password, String userName) {
+  Future<UserVO> craftUserVO(String email, String password, String userName,String userProfile) {
     var newUser = UserVO(
       id: "",
+      userProfile: userProfile,
       userName: userName,
       email: email,
       password: password,
@@ -51,5 +61,10 @@ class AuthenticationModelImpl extends AuthenticationModel {
   @override
   Future<void> logOut() {
     return mDataAgent.logOut();
+  }
+
+  @override
+  Future<UserVO> getUserProfileById(String id) {
+    return mDataAgent.getUserProfileById(id);
   }
 }

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/blocs/register_bloc.dart';
 import 'package:social_media_app/resources/dimens.dart';
@@ -43,7 +46,69 @@ class RegisterPage extends StatelessWidget {
                         height: MARGIN_XXLARGE,
                       ),
                       Consumer<RegisterBloc>(
-                        builder: (context, bloc, child) => LabelAndTextFieldView(
+                        builder: (context, bloc, child) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text("Profile Picture"),
+                              Stack(
+                                children: [
+                                  Container(
+                                    child: (bloc.userProfile == null)
+                                        ? GestureDetector(
+                                            child: const CircleAvatar(
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              backgroundImage: NetworkImage(
+                                                "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640",
+                                              ),
+                                              radius: 50,
+                                            ),
+                                            onTap: () async {
+                                              final ImagePicker picker =
+                                                  ImagePicker();
+                                              // Pick an image
+                                              final XFile? image =
+                                                  await picker.pickImage(
+                                                      source:
+                                                          ImageSource.gallery);
+                                              if (image != null) {
+                                                bloc.onImageChosen(
+                                                    File(image.path));
+                                              }
+                                            },
+                                          )
+                                        : CircleAvatar(
+                                            child: Image.file(
+                                              bloc.userProfile ?? File(""),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: Visibility(
+                                      visible: bloc.userProfile != null,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          bloc.onTapDeleteImage();
+                                        },
+                                        child: const Icon(
+                                          Icons.delete_rounded,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ]),
+                      ),
+                      const SizedBox(
+                        height: MARGIN_XLARGE,
+                      ),
+                      Consumer<RegisterBloc>(
+                        builder: (context, bloc, child) =>
+                            LabelAndTextFieldView(
                           label: LBL_EMAIL,
                           hint: HINT_EMAIL,
                           onChanged: (email) => bloc.onEmailChanged(email),
@@ -53,7 +118,8 @@ class RegisterPage extends StatelessWidget {
                         height: MARGIN_XLARGE,
                       ),
                       Consumer<RegisterBloc>(
-                        builder: (context, bloc, child) => LabelAndTextFieldView(
+                        builder: (context, bloc, child) =>
+                            LabelAndTextFieldView(
                           label: LBL_USER_NAME,
                           hint: HINT_USER_NAME,
                           onChanged: (userName) =>
@@ -64,7 +130,8 @@ class RegisterPage extends StatelessWidget {
                         height: MARGIN_XLARGE,
                       ),
                       Consumer<RegisterBloc>(
-                        builder: (context, bloc, child) => LabelAndTextFieldView(
+                        builder: (context, bloc, child) =>
+                            LabelAndTextFieldView(
                           label: LBL_PASSWORD,
                           hint: HINT_PASSWORD,
                           onChanged: (password) =>

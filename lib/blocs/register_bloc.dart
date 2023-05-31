@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:social_media_app/data/models/authentication_model.dart';
 import 'package:social_media_app/data/models/authentication_model_impl.dart';
@@ -10,13 +12,16 @@ class RegisterBloc extends ChangeNotifier {
   String userName = "";
   bool isDisposed = false;
 
+  /// Image
+  File? userProfile;
+
   /// Model
   final AuthenticationModel _model = AuthenticationModelImpl();
 
   Future onTapRegister() {
     _showLoading();
     return _model
-        .register(email, userName, password)
+        .register(email, userName, password,userProfile)
         .whenComplete(() => _hideLoading());
   }
 
@@ -30,6 +35,16 @@ class RegisterBloc extends ChangeNotifier {
 
   void onUserNameChanged(String userName) {
     this.userName = userName;
+  }
+
+  void onImageChosen(File imageFile) {
+    userProfile = imageFile;
+    _notifySafely();
+  }
+
+  void onTapDeleteImage() {
+    userProfile = null;
+    _notifySafely();
   }
 
   void _showLoading() {

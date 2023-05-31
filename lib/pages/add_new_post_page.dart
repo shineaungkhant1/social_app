@@ -224,7 +224,7 @@ class ProfileImageAndNameView extends StatelessWidget {
       builder: (context, bloc, child) => Row(
         children: [
           ProfileImageView(
-            profileImage: bloc.profilePicture ?? "",
+            profileImage: bloc.profilePicture.isEmpty?"https://www.citypng.com/public/uploads/preview/download-black-male-user-profile-icon-png-116371332534k5baafcll.png":bloc.profilePicture,
           ),
           const SizedBox(
             width: MARGIN_MEDIUM_2,

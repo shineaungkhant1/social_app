@@ -7,6 +7,9 @@ class UserVO {
   @JsonKey(name: "id")
   String? id;
 
+  @JsonKey(name: "user_profile")
+  String? userProfile;
+
   @JsonKey(name: "user_name")
   String? userName;
 
@@ -18,6 +21,7 @@ class UserVO {
 
   UserVO({
     this.id,
+    this.userProfile,
     this.userName,
     this.email,
     this.password,

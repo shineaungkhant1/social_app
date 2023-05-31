@@ -17,4 +17,5 @@ abstract class SocialDataAgent {
   bool isLoggedIn();
   UserVO getLoggedInUser();
   Future logOut();
+  Future<UserVO> getUserProfileById(String userId );
 }

@@ -8,6 +8,7 @@ part of 'user_vo.dart';
 
 UserVO _$UserVOFromJson(Map<String, dynamic> json) => UserVO(
       id: json['id'] as String?,
+      userProfile: json['user_profile'] as String?,
       userName: json['user_name'] as String?,
       email: json['email'] as String?,
       password: json['password'] as String?,
@@ -15,6 +16,7 @@ UserVO _$UserVOFromJson(Map<String, dynamic> json) => UserVO(
 
 Map<String, dynamic> _$UserVOToJson(UserVO instance) => <String, dynamic>{
       'id': instance.id,
+      'user_profile': instance.userProfile,
       'user_name': instance.userName,
       'email': instance.email,
       'password': instance.password,
