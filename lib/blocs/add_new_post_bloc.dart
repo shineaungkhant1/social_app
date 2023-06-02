@@ -8,6 +8,8 @@ import 'package:social_media_app/data/models/social_model_impl.dart';
 import 'package:social_media_app/data/vos/news_feed_vo.dart';
 import 'package:social_media_app/data/vos/user_vo.dart';
 
+import '../analytics/firebase_analytics_tracker.dart';
+
 class AddNewPostBloc extends ChangeNotifier {
   /// State
   String newPostDescription = "";
@@ -37,6 +39,10 @@ class AddNewPostBloc extends ChangeNotifier {
     } else {
       _prepopulateDataForAddNewPost();
     }
+
+    /// Firebase
+    _sendAnalyticsData(addNewPostScreenReached, null);
+
   }
 
   void _prepopulateDataForAddNewPost() {
@@ -88,14 +94,22 @@ class AddNewPostBloc extends ChangeNotifier {
         return _editNewsFeedPost().then((value) {
           isLoading = false;
           _notifySafely();
+          _sendAnalyticsData(
+              editPostAction, {postId: mNewsFeed?.id.toString() ?? ""});
         });
       } else {
         return _createNewNewsFeedPost().then((value) {
           isLoading = false;
           _notifySafely();
+          _sendAnalyticsData(addNewPostAction, null);
         });
       }
     }
+  }
+
+  /// Analytics
+  void _sendAnalyticsData(String name, Map<String, String>? parameters) async {
+    await FirebaseAnalyticsTracker().logEvent(name, parameters);
   }
 
   void _notifySafely() {
@@ -114,7 +128,7 @@ class AddNewPostBloc extends ChangeNotifier {
   }
 
   Future<void> _createNewNewsFeedPost() {
-    return _model.addNewPost(newPostDescription, chosenImageFile,userProfile);
+    return _model.addNewPost(newPostDescription, chosenImageFile);
   }
 
   @override

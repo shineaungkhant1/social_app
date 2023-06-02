@@ -1,8 +1,10 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/blocs/news_feed_bloc.dart';
 import 'package:social_media_app/pages/add_new_post_page.dart';
 import 'package:social_media_app/pages/login_page.dart';
+import 'package:social_media_app/pages/text_detection_page.dart';
 import 'package:social_media_app/resources/dimens.dart';
 import 'package:social_media_app/utils/extensions.dart';
 import 'package:social_media_app/viewitems/news_feed_item_view.dart';
@@ -35,6 +37,21 @@ class NewsFeedPage extends StatelessWidget {
             ),
           ),
           actions: [
+            GestureDetector(
+              onTap: () {
+                navigateToScreen(context, const TextDetectionPage());
+              },
+              child: Container(
+                margin: const EdgeInsets.only(
+                  right: MARGIN_LARGE,
+                ),
+                child: const Icon(
+                  Icons.face_outlined ,
+                  color: Colors.grey,
+                  size: MARGIN_LARGE,
+                ),
+              ),
+            ),
             GestureDetector(
               onTap: () {},
               child: Container(
@@ -73,6 +90,7 @@ class NewsFeedPage extends StatelessWidget {
           onPressed: () {
             /// Navigate to Add New Post Page
             _navigateToAddNewPostPage(context);
+            FirebaseCrashlytics.instance.crash();
           },
           child: const Icon(
             Icons.add,

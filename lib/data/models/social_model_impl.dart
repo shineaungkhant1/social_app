@@ -23,7 +23,6 @@ class SocialModelImpl extends SocialModel {
   /// Other Models
   final AuthenticationModel _authenticationModel = AuthenticationModelImpl();
 
-  String userProfile ="";
 
   @override
   Stream<List<NewsFeedVO>> getNewsFeed() {
@@ -36,26 +35,25 @@ class SocialModelImpl extends SocialModel {
   }
 
   @override
-  Future<void> addNewPost(String description, File? imageFile,String userProfile ) {
+  Future<void> addNewPost(String description, File? imageFile ) {
     if (imageFile != null) {
       return mDataAgent
           .uploadFileToFirebase(imageFile)
-          .then((downloadUrl) => craftNewsFeedVO(description, downloadUrl,userProfile))
+          .then((downloadUrl) => craftNewsFeedVO(description, downloadUrl))
           .then((newPost) => mDataAgent.addNewPost(newPost));
     } else {
-      return craftNewsFeedVO(description, "","")
+      return craftNewsFeedVO(description, "")
           .then((newPost) => mDataAgent.addNewPost(newPost));
     }
   }
 
-  Future<NewsFeedVO> craftNewsFeedVO(String description,String imageUrl,String userProfile) {
+  Future<NewsFeedVO> craftNewsFeedVO(String description,String imageUrl) {
     var currentMilliseconds = DateTime.now().millisecondsSinceEpoch;
     var newPost = NewsFeedVO(
       id: currentMilliseconds,
       userName: _authenticationModel.getLoggedInUser().userName,
       postImage: imageUrl,
       description: description,
-      profilePicture:userProfile,
     );
     return Future.value(newPost);
   }
