@@ -205,8 +205,9 @@ class PostButtonView extends StatelessWidget {
             Navigator.pop(context);
           });
         },
-        child: const PrimaryButtonView(
+        child:  PrimaryButtonView(
           label: LBL_POST,
+          themeColor: bloc.themeColor,
         ),
       ),
     );
