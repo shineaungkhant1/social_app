@@ -30,5 +30,30 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+
+
+       <activity
+           android:name="com.google.firebase.auth.internal.GenericIdpActivity"
+           android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+       <!-- Firestore requires this service -->
+       <service
+           android:name="com.google.firebase.components.ComponentDiscoveryService"
+           android:exported="false">
+           <meta-data
+               android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+               android:value="com.google.firebase.components.ComponentRegistrar" />
+           <meta-data
+               android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+               android:value="com.google.firebase.components.ComponentRegistrar" />
+       </service>
+
     </application>
+
+    <!-- Firestore requires this permission -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Firestore requires this activity -->
+
 </manifest>

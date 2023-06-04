@@ -37,7 +37,7 @@ class SocialModelImpl extends SocialModel {
   }
 
   @override
-  Future<void> addNewPost(String description, File? imageFile ) {
+  Future<void> addNewPost(String description, File? imageFile) {
     if (imageFile != null) {
       return mDataAgent
           .uploadFileToFirebase(imageFile)
@@ -49,11 +49,15 @@ class SocialModelImpl extends SocialModel {
     }
   }
 
-  Future<NewsFeedVO> craftNewsFeedVO(String description,String imageUrl) {
-    var currentMilliseconds = DateTime.now().millisecondsSinceEpoch;
+  Future<NewsFeedVO> craftNewsFeedVO(String description, String imageUrl) {
+    var currentMilliseconds = DateTime
+        .now()
+        .millisecondsSinceEpoch;
     var newPost = NewsFeedVO(
       id: currentMilliseconds,
-      userName: _authenticationModel.getLoggedInUser().userName,
+      userName: _authenticationModel
+          .getLoggedInUser()
+          .userName,
       postImage: imageUrl,
       description: description,
     );
