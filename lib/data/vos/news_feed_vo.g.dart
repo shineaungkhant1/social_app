@@ -12,6 +12,7 @@ NewsFeedVO _$NewsFeedVOFromJson(Map<String, dynamic> json) => NewsFeedVO(
       profilePicture: json['profile_picture'] as String?,
       userName: json['user_name'] as String?,
       postImage: json['post_image'] as String?,
+      editPostImage: json['edit_post_image'] as String?,
     );
 
 Map<String, dynamic> _$NewsFeedVOToJson(NewsFeedVO instance) =>
@@ -21,4 +22,5 @@ Map<String, dynamic> _$NewsFeedVOToJson(NewsFeedVO instance) =>
       'profile_picture': instance.profilePicture,
       'user_name': instance.userName,
       'post_image': instance.postImage,
+      'edit_post_image': instance.editPostImage,
     };

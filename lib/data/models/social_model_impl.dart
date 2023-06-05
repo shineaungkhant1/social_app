@@ -19,8 +19,8 @@ class SocialModelImpl extends SocialModel {
 
   SocialModelImpl._internal();
 
-  SocialDataAgent mDataAgent = RealtimeDatabaseDataAgentImpl();
-  // SocialDataAgent mDataAgent = CloudFireStoreDataAgentImpl();
+  // SocialDataAgent mDataAgent = RealtimeDatabaseDataAgentImpl();
+  SocialDataAgent mDataAgent = CloudFireStoreDataAgentImpl();
 
   /// Other Models
   final AuthenticationModel _authenticationModel = AuthenticationModelImpl();
@@ -37,19 +37,19 @@ class SocialModelImpl extends SocialModel {
   }
 
   @override
-  Future<void> addNewPost(String description, File? imageFile) {
+  Future<void> addNewPost(String description, File? imageFile,String profilePicture) {
     if (imageFile != null) {
       return mDataAgent
           .uploadFileToFirebase(imageFile)
-          .then((downloadUrl) => craftNewsFeedVO(description, downloadUrl))
+          .then((downloadUrl) => craftNewsFeedVO(description, downloadUrl,profilePicture))
           .then((newPost) => mDataAgent.addNewPost(newPost));
     } else {
-      return craftNewsFeedVO(description, "")
+      return craftNewsFeedVO(description, "",profilePicture)
           .then((newPost) => mDataAgent.addNewPost(newPost));
     }
   }
 
-  Future<NewsFeedVO> craftNewsFeedVO(String description, String imageUrl) {
+  Future<NewsFeedVO> craftNewsFeedVO(String description, String imageUrl,String profilePicture) {
     var currentMilliseconds = DateTime
         .now()
         .millisecondsSinceEpoch;
@@ -60,6 +60,7 @@ class SocialModelImpl extends SocialModel {
           .userName,
       postImage: imageUrl,
       description: description,
+      profilePicture: profilePicture
     );
     return Future.value(newPost);
   }

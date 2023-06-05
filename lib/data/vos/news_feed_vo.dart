@@ -19,12 +19,17 @@ class NewsFeedVO {
   @JsonKey(name: "post_image")
   String? postImage;
 
+  @JsonKey(name: "edit_post_image")
+  String? editPostImage;
+
+
   NewsFeedVO({
     this.id,
     this.description,
     this.profilePicture,
     this.userName,
     this.postImage,
+    this.editPostImage
   });
 
   factory NewsFeedVO.fromJson(Map<String, dynamic> json) =>

@@ -117,7 +117,12 @@ class CloudFireStoreDataAgentImpl extends SocialDataAgent {
 
   @override
   Future<UserVO> getUserProfileById(String userId) {
-    // TODO: implement getUserProfileById
-    throw UnimplementedError();
+    return _fireStore
+        .collection("users")
+        .doc(userId.toString())
+        .get()
+        .then((documentSnapShot) =>  UserVO.fromJson(documentSnapShot.data()!));
+
+
   }
 }

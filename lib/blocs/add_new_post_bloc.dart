@@ -142,7 +142,7 @@ class AddNewPostBloc extends ChangeNotifier {
   }
 
   Future<void> _createNewNewsFeedPost() {
-    return _model.addNewPost(newPostDescription, chosenImageFile);
+    return _model.addNewPost(newPostDescription, chosenImageFile,profilePicture);
   }
 
   @override
