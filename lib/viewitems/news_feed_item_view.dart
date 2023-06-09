@@ -135,43 +135,43 @@ class PostImageView extends StatelessWidget {
   }
 }
 
-class MoreButtonView extends StatelessWidget {
-  final Function onTapDelete;
-  final Function onTapEdit;
+  class MoreButtonView extends StatelessWidget {
+    final Function onTapDelete;
+    final Function onTapEdit;
 
-  const MoreButtonView({
-    Key? key,
-    required this.onTapDelete,
-    required this.onTapEdit,
-  }) : super(key: key);
+    const MoreButtonView({
+      Key? key,
+      required this.onTapDelete,
+      required this.onTapEdit,
+    }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton(
-      padding: EdgeInsets.zero,
-      icon: const Icon(
-        Icons.more_vert,
-        color: Colors.grey,
-      ),
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          onTap: () {
-            onTapEdit();
-          },
-          child: const Text("Edit"),
-          value: 1,
+    @override
+    Widget build(BuildContext context) {
+      return PopupMenuButton(
+        padding: EdgeInsets.zero,
+        icon: const Icon(
+          Icons.more_vert,
+          color: Colors.grey,
         ),
-        PopupMenuItem(
-          onTap: () {
-            onTapDelete();
-          },
-          child: const Text("Delete"),
-          value: 2,
-        )
-      ],
-    );
+        itemBuilder: (context) => [
+          PopupMenuItem(
+            onTap: () {
+              onTapEdit();
+            },
+            child: const Text("Edit"),
+            value: 1,
+          ),
+          PopupMenuItem(
+            onTap: () {
+              onTapDelete();
+            },
+            child: const Text("Delete"),
+            value: 2,
+          )
+        ],
+      );
+    }
   }
-}
 
 class NameLocationAndTimeAgoView extends StatelessWidget {
   final String userName;
